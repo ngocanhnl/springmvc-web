@@ -4,9 +4,12 @@
  */
 package com.ngocanh.services.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.ngocanh.pojo.User;
 import com.ngocanh.repositories.UserRepository;
 import com.ngocanh.services.UserService;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +28,10 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service
 public class UserServiceImpl implements UserService {
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private Cloudinary cloudinary;
 
     @Autowired
     private UserRepository userRepo;
@@ -35,26 +43,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(Map<String, String> params, MultipartFile avatar) {
-        return null;
-//        User u = new User();
-//        u.setFirstName(params.get("firstName"));
-//        u.setLastName(params.get("lastName"));
-//        u.setEmail(params.get("email"));
-//        u.setPhone(params.get("phone"));
-//        u.setUsername(params.get("username"));
-//        u.setPassword(this.passwordEncoder.encode(params.get("password")));
-//        u.setUserRole("ROLE_USER");
-//        
-//        if (!avatar.isEmpty()) {
-//            try {
-//                Map res = cloudinary.uploader().upload(avatar.getBytes(), ObjectUtils.asMap("resource_type", "auto"));
-//                u.setAvatar(res.get("secure_url").toString());
-//            } catch (IOException ex) {
-//                Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        
-//        return this.userRepo.addUser(u);
+     
+        User u = new User();
+        u.setFirstName(params.get("firstName"));
+        u.setLastName(params.get("lastName"));
+        u.setEmail(params.get("email"));
+        u.setPhone(params.get("phone"));
+        u.setUsername(params.get("username"));
+        u.setPassword(this.passwordEncoder.encode(params.get("password")));
+        u.setUserRole("ROLE_USER");
+        
+        if (!avatar.isEmpty()) {
+            try {
+                Map res = cloudinary.uploader().upload(avatar.getBytes(), ObjectUtils.asMap("resource_type", "auto"));
+                u.setAvatar(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+        
+        return this.userRepo.addUser(u);
     }
 
     @Override

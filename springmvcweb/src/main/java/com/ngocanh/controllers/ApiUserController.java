@@ -36,7 +36,7 @@ public class ApiUserController {
     
 //    @PostMapping(path="/users", consumes = MediaType.MULTIPART_FORM_DATA, produces=MediaType.APPLICATION_JSON)
     @PostMapping(path = "/users", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> create(@RequestParam Map<String, String> info, @RequestParam MultipartFile avatar){
+    public ResponseEntity<User> create(@RequestParam Map<String, String> info, @RequestParam(value = "avatar") MultipartFile avatar){
         User u = this.userService.addUser(info, avatar);
         return new ResponseEntity<>(u,HttpStatus.CREATED);
     } 
