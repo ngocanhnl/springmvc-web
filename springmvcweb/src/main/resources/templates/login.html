@@ -1,0 +1,29 @@
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Trang chu</title>
+    <th:context th:replace="base :: resources"></th:context>
+</head>
+<body>
+    <div th:replace="base :: header"></div>
+    <main class="container">
+        <h1>Dsang nhap</h1>
+        <form method="post" th:action="@{/login}">
+            <div class="mb-3 mt-3">
+                <label for="email" class="form-label">Username</label>
+                <input  class="form-control" id="email" placeholder="Enter email" name="username">
+            </div>
+            <div class="mb-3">
+                <label for="pwd" class="form-label">Password:</label>
+                <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+    </main>
+
+    <div th:replace="base :: footer"></div>
+</body>
+</html>
